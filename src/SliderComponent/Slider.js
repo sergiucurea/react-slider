@@ -3,6 +3,9 @@ import Slide from './Slide';
 import LeftArrow from './LeftArrow';
 import RightArrow from './RightArrow'
 
+let sliderSpeed = 450;
+let autoSliderSpeed = 4000;
+
 export default class Slider extends Component {
     constructor(props) {
         super(props)
@@ -23,13 +26,22 @@ export default class Slider extends Component {
         }
         this.state.images.push(this.state.images[0]);
         this.state.images.unshift(this.state.images[this.state.images.length - 2]);
+
     }
+
+    componentDidMount() {
+        setTimeout(function () {
+            this.goToNextSlide();
+            this.componentDidMount();
+        }.bind(this), autoSliderSpeed);
+    }
+
     goToPrevSlide() {
         setTimeout(function () {
             this.setState({
                 disabled: ""
             })
-        }.bind(this), 450);
+        }.bind(this), sliderSpeed);
         if (this.state.currentIndex <= 1) {
             setTimeout(function () {
                 console.log("hello");
@@ -39,7 +51,7 @@ export default class Slider extends Component {
                     speed: 0,
                 }));
             }.bind(this)
-                , 450);
+                , sliderSpeed);
         }
         this.setState(prevState => ({
             currentIndex: prevState.currentIndex - 1,
@@ -48,13 +60,13 @@ export default class Slider extends Component {
             disabled: "disabled"
         }));
     }
-    
+
     goToNextSlide() {
         setTimeout(function () {
             this.setState({
                 disabled: ""
             })
-        }.bind(this), 450);
+        }.bind(this), sliderSpeed);
         if (this.state.currentIndex >= this.state.images.length - 3) {
             setTimeout(function () {
                 this.setState(prevState => ({
@@ -63,7 +75,7 @@ export default class Slider extends Component {
                     speed: 0
                 }));
             }.bind(this)
-                , 450);
+                , sliderSpeed);
         }
         this.setState(prevState => ({
             currentIndex: prevState.currentIndex + 1,
